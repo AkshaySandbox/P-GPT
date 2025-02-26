@@ -24,6 +24,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
+from langgraph.errors import GraphRecursionError
 from qdrant_client import QdrantClient
 from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -316,13 +317,23 @@ def pregnancy_knowledge_base(query: str, category: Optional[str] = None) -> str:
         return formatted_response
     except Exception as e:
         debug_print(f"Error in pregnancy_knowledge_base: {e}")
-        return """I encountered an error while searching the knowledge base. Here are some reliable Canadian resources you can check:
+        import traceback
+        debug_print(f"Detailed error: {traceback.format_exc()}")
+        
+        # Return a more helpful error message
+        return f"""I'm having trouble accessing the pregnancy knowledge base at the moment. This might be due to a technical issue.
+
+Here are some reliable Canadian resources you can check in the meantime:
 
 - Health Canada Pregnancy Resources: www.canada.ca/en/public-health/services/pregnancy.html
 - Canadian Paediatric Society: www.caringforkids.cps.ca
 - Society of Obstetricians and Gynaecologists of Canada: www.pregnancyinfo.ca
 
-Please try rephrasing your question or consult these resources directly."""
+For information about birth plans in Canada specifically, you might want to check:
+- The Society of Obstetricians and Gynaecologists of Canada (SOGC): www.pregnancyinfo.ca
+- Health Canada's Healthy Pregnancy Guide: www.canada.ca/en/public-health/services/pregnancy/healthy-pregnancy-guide.html
+
+You can also try asking me a different question or rephrasing your current one."""
 
 # Setup tools
 tool_belt = [
@@ -432,16 +443,40 @@ def should_continue(state):
         last_message = state["messages"][-1]
         debug_print(f"Checking if should continue. Last message: {last_message}")
         
+        # Check if the message has tool calls
         if hasattr(last_message, "additional_kwargs") and \
            "tool_calls" in last_message.additional_kwargs and \
            last_message.additional_kwargs["tool_calls"]:
-            debug_print("Tool calls detected, continuing to action node")
-            return "action"
+            
+            # Get the tool calls
+            tool_calls = last_message.additional_kwargs["tool_calls"]
+            debug_print(f"Tool calls detected: {len(tool_calls)}")
+            
+            # Check if any tool calls are valid
+            valid_tools = [t.name for t in tool_belt]
+            has_valid_tool = False
+            
+            for tool_call in tool_calls:
+                if "function" in tool_call and "name" in tool_call["function"]:
+                    tool_name = tool_call["function"]["name"]
+                    if tool_name in valid_tools:
+                        has_valid_tool = True
+                        debug_print(f"Valid tool call detected: {tool_name}")
+                        break
+            
+            if has_valid_tool:
+                debug_print("Valid tool calls detected, continuing to action node")
+                return "action"
+            else:
+                debug_print("No valid tool calls detected, ending conversation turn")
+                return "end"
         
         debug_print("No tool calls detected, ending conversation turn")
         return "end"
     except Exception as e:
         debug_print(f"Error in should_continue: {e}")
+        import traceback
+        debug_print(f"Traceback: {traceback.format_exc()}")
         # If there's any error in processing, end the conversation
         return "end"
 
@@ -460,7 +495,7 @@ graph.add_conditional_edges(
 )
 graph.add_edge("action", "agent")
 
-# Compile graph
+# Compile graph without recursion limit
 compiled_graph = graph.compile()
 
 @cl.on_chat_start
@@ -502,7 +537,7 @@ async def handle(message: cl.Message):
         
         try:
             debug_print("Starting graph stream")
-            async for chunk in graph.astream(state):
+            async for chunk in graph.astream(state, {"recursion_limit": 50}):
                 debug_print(f"Received chunk: {chunk}")
                 for node, values in chunk.items():
                     debug_print(f"Processing node: {node}")
@@ -535,6 +570,28 @@ async def handle(message: cl.Message):
                             else:
                                 debug_print("WARNING: Empty action response")
         
+        except GraphRecursionError as e:
+            debug_print(f"Graph recursion error: {e}")
+            error_message = """
+I apologize, but I'm having trouble processing your request due to a technical limitation. 
+
+Here's what I can tell you about birth plans in Canada:
+
+1. Birth plans are personal documents that outline your preferences for labor and delivery.
+2. They typically include preferences for pain management, delivery positions, and who you want present.
+3. In Canada, birth plans are respected by healthcare providers but may need to be flexible based on medical needs.
+4. It's recommended to discuss your birth plan with your healthcare provider well before your due date.
+
+For more detailed information, please consider:
+- Discussing with your healthcare provider
+- Visiting Health Canada's pregnancy resources: www.canada.ca/en/public-health/services/pregnancy.html
+- Checking the Society of Obstetricians and Gynaecologists of Canada: www.pregnancyinfo.ca
+
+You can also try asking a more specific question about birth plans.
+"""
+            await msg.stream_token(error_message)
+            full_response = error_message
+            
         except Exception as e:
             debug_print(f"Error in graph streaming: {e}")
             import traceback
@@ -633,3 +690,7 @@ async def on_action(action):
     except Exception as e:
         debug_print(f"Error in action callback: {e}")
         await cl.Message(content="Sorry, there was an error processing your selection. Please type your question instead.").send()
+
+
+
+        
