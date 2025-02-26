@@ -41,6 +41,46 @@ Pregnancy GPT is a specialized AI assistant that provides reliable, Canadian-foc
 - **Web Search**: Targeted search of official Canadian health websites
 - **UI**: Chainlit for interactive chat experience
 
+## FineTuned Model 
+
+- https://huggingface.co/AkshaySandbox/pregnancy-mpnet-embeddings
+
+## Evaluation Result 
+
+- https://github.com/AkshaySandbox/P-GPT/tree/main/code/MT-Rag/P-GPT/evaluation
+
+faithfulness: 0.714
+Description: Measures how accurate and consistent the responses are with the provided context
+
+answer_relevancy: 0.581
+Description: Evaluates how well the responses address the specific questions asked
+
+context_precision: 0.511
+Description: Assesses the relevance of the retrieved context to the question
+
+context_recall: 0.580
+Description: Measures how well the system captures all relevant information
+
+Results saved to:
+- rag_evaluation_results.csv (metrics)
+- rag_evaluation_data.csv (full evaluation data)
+
+Summary Statistics:
+------------------
+Average Score: 0.597
+Best Metric: faithfulness (0.714)
+Areas for Improvement: context_precision (0.511)
+
+Recommendations:
+--------------
+- Enhance answer focus by improving question understanding
+- Refine context retrieval by adjusting similarity search parameters
+- Expand knowledge coverage by adding more comprehensive documentation
+
+## Demo Video
+- https://www.loom.com/share/b167f2b002ac4477bd3bcef9434b3aac
+
+
 ## ⚠️ Disclaimer
 
 This tool provides information but does not replace professional medical advice. Always consult healthcare providers for medical decisions. 
