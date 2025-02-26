@@ -49,6 +49,9 @@ Expecting and new parents in Canada often face challenges accessing reliable, ti
 2. The system searches our knowledge base of verified information
 3. If needed, it performs a targeted web search of official Canadian health resources
 4. Information is presented with clear sections, key takeaways, and source citations
+   
+## Demo video
+https://www.loom.com/share/eba0163d11514689bc54480137159bc8
 
 ## 🛠️ Technical Details
 
@@ -93,10 +96,6 @@ Recommendations:
 - Enhance answer focus by improving question understanding
 - Refine context retrieval by adjusting similarity search parameters
 - Expand knowledge coverage by adding more comprehensive documentation
-
-## Demo Video
-- https://www.loom.com/share/b167f2b002ac4477bd3bcef9434b3aac
-
 
 ## ⚠️ Disclaimer
 
