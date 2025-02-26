@@ -1,0 +1,38 @@
+[project]
+name = "MomGPT"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "arxiv>=2.1.3",
+    "duckduckgo-search==5.3.1b1",
+    "jupyter>=1.1.1",
+    "langchain>=0.3.15",
+    "langchain-community>=0.3.15",
+    "langchain-openai>=0.3.2",
+    "langgraph>=0.2.67",
+    "langchain-core>=0.3.15",
+    "langchain-openai>=0.3.2",
+    "langchain-community>=0.3.15",
+    "langchain-core>=0.3.15",
+    "chainlit>=2.2.1",
+    "python-dotenv>=1.0.1",
+    "openai>=1.1.1",
+    "langchain-core>=0.3.15",
+    "langchain-openai>=0.3.2",
+    "langchain-community>=0.3.15",
+    "langchain-core>=0.3.15",
+    "qdrant-client>=1.7.0",
+    "pypdf>=3.14.1",
+    "langchain-qdrant>=0.2.0",
+    "Pillow>=11.1.0",
+    "ragas>=0.2.13",
+    "pandas>=2.2.3",
+    "dataset>=1.6.2",
+    "sentence-transformers>=2.2.2",
+    "huggingface-hub>=0.19.0",
+    "torch>=2.0.0",
+    "accelerate>=0.26.0",
+    "langchain-huggingface>=0.1.2"
+]

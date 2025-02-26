@@ -1,0 +1,12 @@
+{
+  "title": "Pregnancy GPT",
+  "emoji": "\ud83d\udc76",
+  "colorFrom": "pink",
+  "colorTo": "purple",
+  "sdk": "docker",
+  "app_port": 7860,
+  "fullWidth": true,
+  "pinned": true,
+  "license": "mit",
+  "duplicated_from": null
+}
