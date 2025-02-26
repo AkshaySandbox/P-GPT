@@ -9,6 +9,23 @@
 
 Pregnancy GPT is a specialized AI assistant that provides reliable, Canadian-focused information about pregnancy, childbirth, and early parenthood. It combines a curated knowledge base with targeted web searches to deliver accurate and helpful information.
 
+
+### Problem Statement
+Expecting and new parents in Canada often face challenges accessing reliable, timely, and personalized information on pregnancy, postpartum care, and early parenthood. They may struggle with understanding healthcare options, newborn care, mental health support, and government benefits, leading to stress and uncertainty.
+
+### Target Audience
+- Expecting parents seeking guidance on pregnancy health and wellness
+- New parents navigating postpartum recovery and infant care
+- Caregivers and family members supporting early parenthood
+- Individuals looking for Canadian-specific healthcare resources, benefits, and support programs
+### How the Chat Assistant Helps
+- Provides Reliable Information: Offers accurate, evidence-based guidance on pregnancy, childbirth, and early parenting
+- Supports Mental Well-being: Shares resources on postpartum depression, parental mental health, and self-care
+- Guides on Government Benefits: Assists in understanding maternity/parental leave, child benefits, and healthcare services available in Canada
+- Answers Common Parenting Questions: Covers baby care, feeding, sleep routines, and developmental milestones
+- Connects to Local Services: Helps users find relevant healthcare providers, lactation consultants, parenting support groups, and community programs
+
+
 ## 🌟 Key Features
 
 - **Canadian-Focused Information**: Prioritizes Canadian healthcare guidelines and resources
